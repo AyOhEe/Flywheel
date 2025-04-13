@@ -134,8 +134,6 @@ dependencies {
     modCompileOnly("maven.modrinth:sodium:${property("sodium_version")}-neoforge")
     modCompileOnly("maven.modrinth:iris:${property("iris_version")}-neoforge")
 
-    modCompileOnly("maven.modrinth:embeddium:${property("embeddium_version")}")
-
     "forApi"(project(path = common, configuration = "apiClasses"))
     "forLib"(project(path = common, configuration = "libClasses"))
     "forBackend"(project(path = common, configuration = "backendClasses"))

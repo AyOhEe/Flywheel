@@ -83,8 +83,6 @@ dependencies {
     modCompileOnly("maven.modrinth:sodium:${property("sodium_version")}-neoforge")
     modCompileOnly("maven.modrinth:iris:${property("iris_version")}-neoforge")
 
-    modCompileOnly("maven.modrinth:embeddium:${property("embeddium_version")}")
-
     compileOnly(project(path = common, configuration = "vanillinClasses"))
     compileOnly(project(path = common, configuration = "vanillinResources"))
 
