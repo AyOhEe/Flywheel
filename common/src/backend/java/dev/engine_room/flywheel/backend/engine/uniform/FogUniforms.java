@@ -10,16 +10,16 @@ public final class FogUniforms extends UniformWriter {
 	public static void update() {
 		long ptr = BUFFER.ptr();
 
-		var color = RenderSystem.getShaderFogColor();
+		var fog = RenderSystem.getShaderFog();
 
-		ptr = writeFloat(ptr, color[0]);
-		ptr = writeFloat(ptr, color[1]);
-		ptr = writeFloat(ptr, color[2]);
-		ptr = writeFloat(ptr, color[3]);
-		ptr = writeFloat(ptr, RenderSystem.getShaderFogStart());
-		ptr = writeFloat(ptr, RenderSystem.getShaderFogEnd());
+		ptr = writeFloat(ptr, fog.red());
+		ptr = writeFloat(ptr, fog.green());
+		ptr = writeFloat(ptr, fog.blue());
+		ptr = writeFloat(ptr, fog.alpha());
+		ptr = writeFloat(ptr, fog.start());
+		ptr = writeFloat(ptr, fog.end());
 
-		var fogShape = RenderSystem.getShaderFogShape();
+		var fogShape = fog.shape();
 		// Shouldn't ever be null, but we've seen crashes here.
 		ptr = writeInt(ptr, (fogShape == null ? FogShape.SPHERE : fogShape).getIndex());
 

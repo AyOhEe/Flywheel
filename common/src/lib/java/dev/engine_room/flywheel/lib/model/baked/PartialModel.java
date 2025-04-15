@@ -8,7 +8,6 @@ import com.google.common.collect.MapMaker;
 
 import dev.engine_room.flywheel.lib.internal.FlwLibXplat;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.resources.ResourceLocation;
 
 /**

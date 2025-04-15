@@ -6,7 +6,6 @@ import dev.engine_room.flywheel.api.internal.DependencyInjection;
 import dev.engine_room.flywheel.lib.model.SimpleModel;
 import dev.engine_room.flywheel.lib.model.baked.BakedModelBuilder;
 import dev.engine_room.flywheel.lib.model.baked.BlockModelBuilder;
-import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelManager;
 import net.minecraft.resources.ResourceLocation;
 

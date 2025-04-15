@@ -4,8 +4,6 @@ import java.util.Map;
 
 import org.jetbrains.annotations.ApiStatus;
 
-import net.minecraft.client.resources.model.BakedModel;
-import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.client.event.ModelEvent;
 
@@ -14,7 +12,7 @@ public final class PartialModelEventHandler {
 	private PartialModelEventHandler() {
 	}
 
-	public static void onRegisterAdditional(ModelEvent.RegisterAdditional event) {
+	public static void onRegisterAdditional(ModelEvent.RegisterStandalone event) {
 		for (ResourceLocation modelLocation : PartialModel.ALL.keySet()) {
 			event.register(ModelResourceLocation.standalone(modelLocation));
 		}

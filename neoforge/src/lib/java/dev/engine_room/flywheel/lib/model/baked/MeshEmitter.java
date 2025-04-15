@@ -54,7 +54,7 @@ class MeshEmitter implements VertexConsumer {
 	}
 
 	private void prepareForGeometry(BakedQuad quad) {
-		prepareForGeometry(quad.isShade());
+		prepareForGeometry(quad.shade());
 	}
 
 	private void emit() {

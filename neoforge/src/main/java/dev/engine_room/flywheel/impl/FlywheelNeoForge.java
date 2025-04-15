@@ -21,8 +21,8 @@ import net.neoforged.fml.CrashReportCallables;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.neoforge.client.event.AddClientReloadListenersEvent;
 import net.neoforged.neoforge.client.event.CustomizeGuiOverlayEvent;
-import net.neoforged.neoforge.client.event.RegisterClientReloadListenersEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.EntityLeaveLevelEvent;
@@ -99,8 +99,8 @@ public final class FlywheelNeoForge {
 	private static void registerBackendEventListeners(IEventBus gameEventBus, IEventBus modEventBus) {
 		gameEventBus.addListener((ReloadLevelRendererEvent e) -> Uniforms.onReloadLevelRenderer());
 
-		modEventBus.addListener((RegisterClientReloadListenersEvent e) -> {
-			e.registerReloadListener(FlwProgramsReloader.INSTANCE);
+		modEventBus.addListener((AddClientReloadListenersEvent e) -> {
+			e.addListener(FlwProgramsReloader.ID, FlwProgramsReloader.INSTANCE);
 		});
 	}
 

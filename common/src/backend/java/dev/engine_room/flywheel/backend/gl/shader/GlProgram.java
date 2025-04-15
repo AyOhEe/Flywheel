@@ -20,7 +20,6 @@ import org.joml.Matrix3fc;
 import org.joml.Matrix4fc;
 import org.slf4j.Logger;
 
-import com.mojang.blaze3d.shaders.ProgramManager;
 import com.mojang.logging.LogUtils;
 
 import dev.engine_room.flywheel.backend.gl.GlObject;
