@@ -81,7 +81,7 @@ public final class PlayerUniforms extends UniformWriter {
 		ClientLevel level = player.clientLevel;
 		int blockBrightness = level.getBrightness(LightLayer.BLOCK, player.blockPosition());
 		int skyBrightness = level.getBrightness(LightLayer.SKY, player.blockPosition());
-		int maxBrightness = level.getMaxLightLevel();
+		int maxBrightness = 15;
 
 		return writeVec2(ptr, (float) blockBrightness / (float) maxBrightness,
 				(float) skyBrightness / (float) maxBrightness);

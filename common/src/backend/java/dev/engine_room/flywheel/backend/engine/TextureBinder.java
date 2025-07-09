@@ -1,6 +1,9 @@
 package dev.engine_room.flywheel.backend.engine;
 
+import com.mojang.blaze3d.opengl.GlStateManager;
+import com.mojang.blaze3d.opengl.GlTexture;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.textures.GpuTexture;
 
 import dev.engine_room.flywheel.backend.Samplers;
 import net.minecraft.client.Minecraft;
@@ -8,21 +11,24 @@ import net.minecraft.resources.ResourceLocation;
 
 public class TextureBinder {
 	public static void bind(ResourceLocation resourceLocation) {
-		RenderSystem.bindTexture(byName(resourceLocation));
+		GlStateManager._bindTexture(byName(resourceLocation));
 	}
 
 	public static void bindLightAndOverlay() {
 		var gameRenderer = Minecraft.getInstance().gameRenderer;
 
+		// TODO - Review
 		Samplers.OVERLAY.makeActive();
 		gameRenderer.overlayTexture()
 				.setupOverlayColor();
-		RenderSystem.bindTexture(RenderSystem.getShaderTexture(1));
+		GlTexture glTexture1 = (GlTexture) RenderSystem.getShaderTexture(1).texture();
+		GlStateManager._bindTexture(glTexture1.glId());
 
 		Samplers.LIGHT.makeActive();
 		gameRenderer.lightTexture()
 				.turnOnLightLayer();
-		RenderSystem.bindTexture(RenderSystem.getShaderTexture(2));
+		GlTexture glTexture2 = (GlTexture) RenderSystem.getShaderTexture(2).texture();
+		GlStateManager._bindTexture(glTexture2.glId());
 	}
 
 	public static void resetLightAndOverlay() {
@@ -41,9 +47,10 @@ public class TextureBinder {
 	 * @return The texture.
 	 */
 	public static int byName(ResourceLocation texture) {
-		return Minecraft.getInstance()
+		GpuTexture gpuTexture = Minecraft.getInstance()
 				.getTextureManager()
 				.getTexture(texture)
-				.getId();
+				.getTexture();
+		return ((GlTexture) gpuTexture).glId();
 	}
 }

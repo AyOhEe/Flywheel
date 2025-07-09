@@ -6,14 +6,17 @@ import org.spongepowered.asm.mixin.Mixin;
 import dev.engine_room.flywheel.backend.SkyLightSectionStorageExtension;
 import net.minecraft.core.Direction;
 import net.minecraft.core.SectionPos;
+import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.chunk.DataLayer;
+import net.minecraft.world.level.chunk.LightChunkGetter;
+import net.minecraft.world.level.lighting.DataLayerStorageMap;
 import net.minecraft.world.level.lighting.LayerLightSectionStorage;
 import net.minecraft.world.level.lighting.SkyLightSectionStorage;
 
 @Mixin(SkyLightSectionStorage.class)
-public abstract class SkyLightSectionStorageMixin extends LayerLightSectionStorage implements SkyLightSectionStorageExtension {
-	protected SkyLightSectionStorageMixin() {
-		super(null, null, null);
+public abstract class SkyLightSectionStorageMixin<M extends DataLayerStorageMap<M>> extends LayerLightSectionStorage<M> implements SkyLightSectionStorageExtension {
+	protected SkyLightSectionStorageMixin(LightLayer layer, LightChunkGetter chunkSource, M updatingSectionData) {
+		super(layer, chunkSource, updatingSectionData);
 	}
 
 	@Override

@@ -58,14 +58,14 @@ public final class ModelUtil {
 			return Materials.SOLID_BLOCK;
 		}
 
-		if (renderType == Sheets.translucentCullBlockSheet() || renderType == Sheets.translucentItemSheet()) {
+		if (renderType == Sheets.translucentItemSheet()) {
 			return Materials.TRANSLUCENT_ENTITY;
 		}
 
 		if (renderType == RenderType.glint() || renderType == RenderType.glintTranslucent()) {
 			return Materials.GLINT;
 		}
-		if (renderType == RenderType.entityGlint() || renderType == RenderType.entityGlintDirect()) {
+		if (renderType == RenderType.entityGlint()) {
 			return Materials.GLINT_ENTITY;
 		}
 		return null;

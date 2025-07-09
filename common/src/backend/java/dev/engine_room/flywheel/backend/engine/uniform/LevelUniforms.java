@@ -5,8 +5,8 @@ import org.joml.Vector3f;
 import dev.engine_room.flywheel.api.backend.RenderContext;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.util.ARGB;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.Vec3;
 
 public final class LevelUniforms extends UniformWriter {
 	private static final int SIZE = 16 * 4 + 4 * 12;
@@ -24,10 +24,10 @@ public final class LevelUniforms extends UniformWriter {
 		ClientLevel level = context.level();
 		float partialTick = context.partialTick();
 
-		Vec3 skyColor = level.getSkyColor(context.camera().getPosition(), partialTick);
-		Vec3 cloudColor = level.getCloudColor(partialTick);
-		ptr = writeVec4(ptr, (float) skyColor.x, (float) skyColor.y, (float) skyColor.z, 1f);
-		ptr = writeVec4(ptr, (float) cloudColor.x, (float) cloudColor.y, (float) cloudColor.z, 1f);
+		int skyColor = level.getSkyColor(context.camera().getPosition(), partialTick);
+		int cloudColor = level.getCloudColor(partialTick);
+		ptr = writeVec4(ptr, ARGB.redFloat(skyColor), ARGB.greenFloat(skyColor), ARGB.blueFloat(skyColor), 1f);
+		ptr = writeVec4(ptr, ARGB.redFloat(cloudColor), ARGB.greenFloat(cloudColor), ARGB.blueFloat(cloudColor), 1f);
 
 		ptr = writeVec3(ptr, LIGHT0_DIRECTION);
 		ptr = writeVec3(ptr, LIGHT1_DIRECTION);

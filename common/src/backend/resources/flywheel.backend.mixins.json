@@ -8,6 +8,7 @@
     "AbstractClientPlayerAccessor",
     "GlStateManagerMixin",
     "LevelRendererAccessor",
+    "LightingMixin",
     "OptionsMixin",
     "RenderSystemMixin",
     "light.LightEngineAccessor",

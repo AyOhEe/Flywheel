@@ -13,14 +13,14 @@ public final class ModelBuilderImpl {
 	private ModelBuilderImpl() {
 	}
 
-	public static SimpleModel buildBakedModelBuilder(BakedModelBuilder builder) {
+	public static SimpleModel buildBakedModelBuilder(BlockStateModelBuilder builder) {
 		BlockState blockState = builder.level.getBlockState(builder.pos);
 		var builder1 = ChunkLayerSortedListBuilder.<Model.ConfiguredMesh>getThreadLocal();
 
-		BakedModelBufferer.bufferModel(builder.bakedModel, builder.pos, builder.level, blockState, builder.poseStack, (renderType, shaded, data) -> {
+		BakedModelBufferer.bufferModel(builder.blockStateModel, builder.pos, builder.level, blockState, builder.poseStack, (renderType, shaded, data) -> {
 			Material material = builder.materialFunc.apply(renderType, shaded);
 			if (material != null) {
-				Mesh mesh = MeshHelper.blockVerticesToMesh(data, "source=BakedModelBuilder," + "bakedModel=" + builder.bakedModel + ",renderType=" + renderType + ",shaded=" + shaded);
+				Mesh mesh = MeshHelper.blockVerticesToMesh(data, "source=BakedModelBuilder," + "bakedModel=" + builder.blockStateModel + ",renderType=" + renderType + ",shaded=" + shaded);
 				builder1.add(renderType, new Model.ConfiguredMesh(material, mesh));
 			}
 		});

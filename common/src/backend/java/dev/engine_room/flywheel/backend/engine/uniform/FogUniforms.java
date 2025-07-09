@@ -1,6 +1,5 @@
 package dev.engine_room.flywheel.backend.engine.uniform;
 
-import com.mojang.blaze3d.shaders.FogShape;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 public final class FogUniforms extends UniformWriter {

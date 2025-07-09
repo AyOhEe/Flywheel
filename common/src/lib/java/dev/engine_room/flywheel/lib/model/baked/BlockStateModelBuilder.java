@@ -11,11 +11,12 @@ import dev.engine_room.flywheel.lib.internal.FlwLibXplat;
 import dev.engine_room.flywheel.lib.model.ModelUtil;
 import dev.engine_room.flywheel.lib.model.SimpleModel;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockAndTintGetter;
 
-public final class BakedModelBuilder {
-	final BakedModel bakedModel;
+public final class BlockStateModelBuilder {
+	final BlockStateModel blockStateModel;
 	@Nullable
 	BlockAndTintGetter level;
 	@Nullable
@@ -25,26 +26,26 @@ public final class BakedModelBuilder {
 	@Nullable
 	BiFunction<RenderType, Boolean, Material> materialFunc;
 
-	public BakedModelBuilder(BakedModel bakedModel) {
-		this.bakedModel = bakedModel;
+	public BlockStateModelBuilder(BlockStateModel blockStateModel) {
+		this.blockStateModel = blockStateModel;
 	}
 
-	public BakedModelBuilder level(@Nullable BlockAndTintGetter level) {
+	public BlockStateModelBuilder level(@Nullable BlockAndTintGetter level) {
 		this.level = level;
 		return this;
 	}
 
-	public BakedModelBuilder pos(@Nullable BlockPos pos) {
+	public BlockStateModelBuilder pos(@Nullable BlockPos pos) {
 		this.pos = pos;
 		return this;
 	}
 
-	public BakedModelBuilder poseStack(@Nullable PoseStack poseStack) {
+	public BlockStateModelBuilder poseStack(@Nullable PoseStack poseStack) {
 		this.poseStack = poseStack;
 		return this;
 	}
 
-	public BakedModelBuilder materialFunc(@Nullable BiFunction<RenderType, Boolean, Material> materialFunc) {
+	public BlockStateModelBuilder materialFunc(@Nullable BiFunction<RenderType, Boolean, Material> materialFunc) {
 		this.materialFunc = materialFunc;
 		return this;
 	}

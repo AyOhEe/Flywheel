@@ -1,5 +1,7 @@
 package dev.engine_room.vanillin.visuals;
 
+import dev.engine_room.flywheel.lib.model.baked.BlockStateModelBuilder;
+
 import org.joml.Matrix4f;
 
 import dev.engine_room.flywheel.api.model.Model;
@@ -7,7 +9,6 @@ import dev.engine_room.flywheel.api.visual.EntityVisual;
 import dev.engine_room.flywheel.api.visualization.VisualizationContext;
 import dev.engine_room.flywheel.lib.instance.InstanceTypes;
 import dev.engine_room.flywheel.lib.instance.TransformedInstance;
-import dev.engine_room.flywheel.lib.model.baked.BakedModelBuilder;
 import dev.engine_room.flywheel.lib.util.RendererReloadCache;
 import dev.engine_room.flywheel.lib.visual.AbstractVisual;
 import dev.engine_room.flywheel.lib.visual.SimpleDynamicVisual;
@@ -37,7 +38,7 @@ public class ItemFrameVisual extends AbstractVisual implements EntityVisual<Item
 				.getBlockModelShaper()
 				.getModelManager();
 
-		return new BakedModelBuilder(modelManager.getModel(mrl))
+		return new BlockStateModelBuilder(modelManager.getModel(mrl))
 				.build();
 	});
 

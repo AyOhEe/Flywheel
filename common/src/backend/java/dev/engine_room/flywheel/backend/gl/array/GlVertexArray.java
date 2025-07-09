@@ -2,6 +2,7 @@ package dev.engine_room.flywheel.backend.gl.array;
 
 import java.util.List;
 
+import org.lwjgl.opengl.GL30;
 import org.lwjgl.opengl.GL32;
 
 import dev.engine_room.flywheel.backend.gl.GlObject;
@@ -39,6 +40,6 @@ public abstract class GlVertexArray extends GlObject {
 
 	@Override
 	protected void deleteInternal(int handle) {
-		GlStateManager._glDeleteVertexArrays(handle);
+		GL30.glDeleteVertexArrays(handle);
 	}
 }

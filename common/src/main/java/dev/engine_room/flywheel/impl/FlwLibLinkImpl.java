@@ -1,7 +1,10 @@
 package dev.engine_room.flywheel.impl;
 
 import java.util.Deque;
+import java.util.List;
 import java.util.Map;
+
+import com.mojang.blaze3d.vertex.PoseStack.Pose;
 
 import org.slf4j.Logger;
 
@@ -44,8 +47,8 @@ public class FlwLibLinkImpl implements FlwLibLink {
 	}
 
 	@Override
-	public Deque<PoseStack.Pose> getPoseStack(PoseStack stack) {
-		return ((PoseStackAccessor) stack).flywheel$getPoseStack();
+	public List<Pose> getPoseStack(PoseStack stack) {
+		return ((PoseStackAccessor) stack).flywheel$getPoses();
 	}
 
 	@Override

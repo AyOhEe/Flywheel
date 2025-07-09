@@ -8,6 +8,7 @@ import com.google.common.collect.MapMaker;
 
 import dev.engine_room.flywheel.lib.internal.FlwLibXplat;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.minecraft.resources.ResourceLocation;
 
 /**
@@ -23,13 +24,13 @@ public final class PartialModel {
 
 	private final ResourceLocation modelLocation;
 	@UnknownNullability
-	BakedModel bakedModel;
+	BlockStateModel blockStateModel;
 
 	private PartialModel(ResourceLocation modelLocation) {
 		this.modelLocation = modelLocation;
 
 		if (populateOnInit) {
-			bakedModel = FlwLibXplat.INSTANCE.getBakedModel(Minecraft.getInstance().getModelManager(), modelLocation);
+			blockStateModel = FlwLibXplat.INSTANCE.getBlockstateModel(Minecraft.getInstance().getModelManager(), modelLocation);
 		}
 	}
 
@@ -38,8 +39,8 @@ public final class PartialModel {
 	}
 
 	@UnknownNullability
-	public BakedModel get() {
-		return bakedModel;
+	public BlockStateModel get() {
+		return blockStateModel;
 	}
 
 	public ResourceLocation modelLocation() {

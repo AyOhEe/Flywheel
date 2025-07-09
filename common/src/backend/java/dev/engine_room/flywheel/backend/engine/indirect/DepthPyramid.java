@@ -4,6 +4,8 @@ import org.lwjgl.opengl.GL32;
 import org.lwjgl.opengl.GL46;
 
 import com.mojang.blaze3d.opengl.GlStateManager;
+import com.mojang.blaze3d.opengl.GlTexture;
+import com.mojang.blaze3d.textures.GpuTexture;
 
 import dev.engine_room.flywheel.backend.compile.IndirectPrograms;
 import dev.engine_room.flywheel.backend.gl.GlTextureUnit;
@@ -33,7 +35,9 @@ public class DepthPyramid {
 
 		createPyramidMips(mipLevels, width, height);
 
-		int depthBufferId = mainRenderTarget.getDepthTexture();
+		// TODO - Review
+		GpuTexture depthTexture = mainRenderTarget.getDepthTexture();
+		int depthBufferId = depthTexture != null ? ((GlTexture) depthTexture).glId() : 0;
 
 		GL46.glMemoryBarrier(GL46.GL_FRAMEBUFFER_BARRIER_BIT);
 
