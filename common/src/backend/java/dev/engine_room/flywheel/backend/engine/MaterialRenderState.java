@@ -2,15 +2,13 @@ package dev.engine_room.flywheel.backend.engine;
 
 import java.util.Comparator;
 
-import com.mojang.blaze3d.opengl.GlConst;
-
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL32;
 
+import com.mojang.blaze3d.opengl.GlConst;
 import com.mojang.blaze3d.opengl.GlStateManager;
 import com.mojang.blaze3d.opengl.GlTexture;
-import com.mojang.blaze3d.platform.DestFactor;
-import com.mojang.blaze3d.platform.SourceFactor;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import dev.engine_room.flywheel.api.material.DepthTest;
@@ -123,11 +121,11 @@ public final class MaterialRenderState {
 		}
 		case ADDITIVE -> {
 			GlStateManager._enableBlend();
-			RenderSystem.blendFunc(SourceFactor.ONE, DestFactor.ONE);
+			GlStateManager._blendFuncSeparate(GL32.GL_ONE, GL32.GL_ONE, GL32.GL_ONE, GL32.GL_ONE);
 		}
 		case LIGHTNING -> {
 			GlStateManager._enableBlend();
-			RenderSystem.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE);
+			GlStateManager._blendFuncSeparate(GL32.GL_SRC_ALPHA, GL32.GL_ONE, GL32.GL_SRC_ALPHA, GL32.GL_ONE);
 		}
 		case GLINT -> {
 			GlStateManager._enableBlend();
@@ -161,7 +159,7 @@ public final class MaterialRenderState {
 
 	private static void resetTexture() {
 		Samplers.DIFFUSE.makeActive();
-		RenderSystem.setShaderTexture(0, 0);
+		RenderSystem.setShaderTexture(0, null);
 	}
 
 	private static void resetBackfaceCulling() {
@@ -180,7 +178,7 @@ public final class MaterialRenderState {
 
 	private static void resetTransparency() {
 		GlStateManager._disableBlend();
-		RenderSystem.defaultBlendFunc();
+		GlStateManager._blendFuncSeparate(GL32.GL_SRC_ALPHA, GL32.GL_ONE_MINUS_SRC_ALPHA, GL32.GL_ONE, GL32.GL_ZERO);
 	}
 
 	private static void resetWriteMask() {
@@ -214,7 +212,6 @@ public final class MaterialRenderState {
 	public static boolean materialIsAllNonNull(@Nullable Material material) {
 		// We do not trust people to give us valid NotNull objects.
 		// @formatter:off
-		//noinspection ConstantValue
 		return material != null &&
 				material.shaders() != null &&
 				material.shaders().fragmentSource() != null &&

@@ -6,8 +6,8 @@ import org.jetbrains.annotations.UnknownNullability;
 import org.lwjgl.opengl.GL32;
 
 import com.mojang.blaze3d.opengl.GlStateManager;
+import com.mojang.blaze3d.opengl.GlTexture;
 import com.mojang.blaze3d.platform.NativeImage;
-import com.mojang.blaze3d.systems.RenderSystem;
 
 import dev.engine_room.flywheel.backend.gl.GlTextureUnit;
 import dev.engine_room.flywheel.lib.util.ResourceUtil;
@@ -39,7 +39,7 @@ public class NoiseTextures {
 			BLUE_NOISE = new DynamicTexture(() -> "Flywheel Blue Noise", image);
 
 			GlTextureUnit.T0.makeActive();
-			BLUE_NOISE.bind();
+			GlStateManager._bindTexture(((GlTexture) NoiseTextures.BLUE_NOISE.getTexture()).glId());
 
 			NoiseTextures.BLUE_NOISE.setFilter(true, false);
 			GlStateManager._texParameter(GL32.GL_TEXTURE_2D, GL32.GL_TEXTURE_WRAP_S, GL32.GL_REPEAT);

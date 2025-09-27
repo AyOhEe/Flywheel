@@ -6,9 +6,6 @@ import org.lwjgl.opengl.GL46;
 import com.mojang.blaze3d.opengl.GlStateManager;
 import com.mojang.blaze3d.opengl.GlTexture;
 import com.mojang.blaze3d.pipeline.RenderTarget;
-import com.mojang.blaze3d.platform.DestFactor;
-import com.mojang.blaze3d.platform.SourceFactor;
-import com.mojang.blaze3d.systems.RenderSystem;
 
 import dev.engine_room.flywheel.backend.NoiseTextures;
 import dev.engine_room.flywheel.backend.Samplers;
@@ -71,7 +68,7 @@ public class OitFramebuffer {
 		GlStateManager._bindTexture(depthBounds);
 
 		Samplers.NOISE.makeActive();
-		NoiseTextures.BLUE_NOISE.bind();
+		GlStateManager._bindTexture(((GlTexture) NoiseTextures.BLUE_NOISE.getTexture()).glId());
 
 		GlStateManager._glBindFramebuffer(GL32.GL_FRAMEBUFFER, fbo);
 		GlTexture glTexture = (GlTexture) renderTarget.getDepthTexture(); // TODO - Review
@@ -86,8 +83,8 @@ public class OitFramebuffer {
 		GlStateManager._depthMask(false);
 		GlStateManager._colorMask(true, true, true, true);
 		GlStateManager._enableBlend();
-		RenderSystem.blendFunc(SourceFactor.ONE, DestFactor.ONE);
-		RenderSystem.blendEquation(GL32.GL_MAX);
+		GlStateManager._blendFuncSeparate(GL32.GL_ONE, GL32.GL_ONE, GL32.GL_ONE, GL32.GL_ONE);
+		GL32.glBlendEquation(GL32.GL_MAX);
 
 		var far = Minecraft.getInstance().gameRenderer.getDepthFar();
 
@@ -96,8 +93,8 @@ public class OitFramebuffer {
 			GL46.glClearNamedFramebufferfv(fbo, GL46.GL_COLOR, 0, new float[]{-far, -far, 0, 0});
 		} else {
 			GL32.glDrawBuffers(DEPTH_RANGE_DRAW_BUFFERS);
-			RenderSystem.clearColor(-far, -far, 0, 0);
-			RenderSystem.clear(GL32.GL_COLOR_BUFFER_BIT, false);
+			GL32.glClearColor(-far, -far, 0, 0);
+			GlStateManager._clear(GL32.GL_COLOR_BUFFER_BIT);
 		}
 	}
 
@@ -109,8 +106,8 @@ public class OitFramebuffer {
 		GlStateManager._depthMask(false);
 		GlStateManager._colorMask(true, true, true, true);
 		GlStateManager._enableBlend();
-		RenderSystem.blendFunc(SourceFactor.ONE, DestFactor.ONE);
-		RenderSystem.blendEquation(GL32.GL_FUNC_ADD);
+		GlStateManager._blendFuncSeparate(GL32.GL_ONE,  GL32.GL_ONE, GL32.GL_ONE, GL32.GL_ONE);
+		GL32.glBlendEquation(GL32.GL_FUNC_ADD);
 
 		if (GlCompat.SUPPORTS_DSA) {
 			GL46.glNamedFramebufferDrawBuffers(fbo, RENDER_TRANSMITTANCE_DRAW_BUFFERS);
@@ -121,8 +118,8 @@ public class OitFramebuffer {
 			GL46.glClearNamedFramebufferfv(fbo, GL46.GL_COLOR, 3, CLEAR_TO_ZERO);
 		} else {
 			GL32.glDrawBuffers(RENDER_TRANSMITTANCE_DRAW_BUFFERS);
-			RenderSystem.clearColor(0, 0, 0, 0);
-			RenderSystem.clear(GL32.GL_COLOR_BUFFER_BIT, false);
+			GL32.glClearColor(0, 0, 0, 0);
+			GlStateManager._clear(GL32.GL_COLOR_BUFFER_BIT);
 		}
 	}
 
@@ -157,8 +154,8 @@ public class OitFramebuffer {
 		GlStateManager._depthMask(false);
 		GlStateManager._colorMask(true, true, true, true);
 		GlStateManager._enableBlend();
-		RenderSystem.blendFunc(SourceFactor.ONE, DestFactor.ONE);
-		RenderSystem.blendEquation(GL32.GL_FUNC_ADD);
+		GlStateManager._blendFuncSeparate(GL32.GL_ONE,  GL32.GL_ONE, GL32.GL_ONE, GL32.GL_ONE);
+		GL32.glBlendEquation(GL32.GL_FUNC_ADD);
 
 		if (GlCompat.SUPPORTS_DSA) {
 			GL46.glNamedFramebufferDrawBuffers(fbo, ACCUMULATE_DRAW_BUFFERS);
@@ -166,8 +163,8 @@ public class OitFramebuffer {
 			GL46.glClearNamedFramebufferfv(fbo, GL46.GL_COLOR, 0, CLEAR_TO_ZERO);
 		} else {
 			GL32.glDrawBuffers(ACCUMULATE_DRAW_BUFFERS);
-			RenderSystem.clearColor(0, 0, 0, 0);
-			RenderSystem.clear(GL32.GL_COLOR_BUFFER_BIT, false);
+			GL32.glClearColor(0, 0, 0, 0);
+			GlStateManager._clear(GL32.GL_COLOR_BUFFER_BIT);
 		}
 	}
 
@@ -175,13 +172,12 @@ public class OitFramebuffer {
 	 * Composite the accumulated luminance onto the main framebuffer.
 	 */
 	public void composite() {
+		RenderTarget target;
 		if (Minecraft.useShaderTransparency()) {
-			Minecraft.getInstance().levelRenderer.getItemEntityTarget()
-					.bindWrite(false);
+			target = Minecraft.getInstance().levelRenderer.getItemEntityTarget();
+			target.copyDepthFrom(Minecraft.getInstance().getMainRenderTarget());
 		} else {
-			Minecraft.getInstance()
-					.getMainRenderTarget()
-					.bindWrite(false);
+			target = Minecraft.getInstance().getMainRenderTarget();
 		}
 
 		// The composite shader writes out the closest depth to gl_FragDepth.
@@ -198,8 +194,8 @@ public class OitFramebuffer {
 		//
 		// Though note that the alpha value we emit in the fragment shader is actually (1. - transmittance_total).
 		// The extra inversion step is so we can have a sane alpha value written out for the fabulous blit shader to consume.
-		RenderSystem.blendFuncSeparate(SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA, SourceFactor.ONE, DestFactor.ONE_MINUS_SRC_ALPHA);
-		RenderSystem.blendEquation(GL32.GL_FUNC_ADD);
+		GlStateManager._blendFuncSeparate(GL32.GL_SRC_ALPHA, GL32.GL_ONE_MINUS_SRC_ALPHA, GL32.GL_ONE, GL32.GL_ONE_MINUS_SRC_ALPHA);
+		GL32.glBlendEquation(GL32.GL_FUNC_ADD);
 		GlStateManager._depthFunc(GL32.GL_ALWAYS);
 
 		GlTextureUnit.T0.makeActive();
@@ -210,9 +206,8 @@ public class OitFramebuffer {
 
 		drawFullscreenQuad();
 
-		Minecraft.getInstance()
-				.getMainRenderTarget()
-				.bindWrite(false);
+		int depthId = ((GlTexture) target.getDepthTexture()).glId();
+		GL32.glFramebufferTexture(GL32.GL_FRAMEBUFFER, GL32.GL_DEPTH_ATTACHMENT, depthId, 0);
 	}
 
 	public void delete() {
