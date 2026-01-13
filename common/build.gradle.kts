@@ -118,8 +118,9 @@ jarSets {
 dependencies {
     modCompileOnly("net.fabricmc:fabric-loader:${property("fabric_loader_version")}")
 
-    modCompileOnly("maven.modrinth:sodium:${property("sodium_version")}-fabric")
-    modCompileOnly("maven.modrinth:iris:${property("iris_version")}-fabric")
+    //TODO disabled due to loom version incompatibilities
+    //modCompileOnly("maven.modrinth:sodium:${property("sodium_version")}-fabric")
+    //modCompileOnly("maven.modrinth:iris:${property("iris_version")}-fabric")
 
     compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:0.4.1")!!)
 
