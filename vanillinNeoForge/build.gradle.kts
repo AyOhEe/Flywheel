@@ -80,8 +80,8 @@ repositories {
 dependencies {
     neoForge("net.neoforged:neoforge:${property("neoforge_version")}")
 
-    modCompileOnly("maven.modrinth:sodium:${property("sodium_version")}-neoforge")
-    modCompileOnly("maven.modrinth:iris:${property("iris_version")}-neoforge")
+    //modCompileOnly("maven.modrinth:sodium:${property("sodium_version")}-neoforge")
+    //modCompileOnly("maven.modrinth:iris:${property("iris_version")}-neoforge")
 
     // Embeddium does not exist on 1.21.11
     //modCompileOnly("maven.modrinth:embeddium:${property("embeddium_version")}")
