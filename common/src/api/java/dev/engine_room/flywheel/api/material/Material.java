@@ -1,8 +1,8 @@
 package dev.engine_room.flywheel.api.material;
 
-import org.jetbrains.annotations.Nullable;
+import net.minecraft.resources.Identifier;
 
-import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.Nullable;
 
 public interface Material {
 	MaterialShaders shaders();
@@ -13,7 +13,7 @@ public interface Material {
 
 	LightShader light();
 
-	ResourceLocation texture();
+	Identifier texture();
 
 	/**
 	 * Should this material have linear filtering applied to the diffuse sampler?
