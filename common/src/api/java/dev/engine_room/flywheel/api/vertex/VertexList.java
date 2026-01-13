@@ -37,6 +37,8 @@ public interface VertexList {
 
 	float normalZ(int index);
 
+	float lineWidth(int index);
+
 	default void write(MutableVertexList dst, int srcIndex, int dstIndex) {
 		dst.x(dstIndex, x(srcIndex));
 		dst.y(dstIndex, y(srcIndex));
@@ -56,6 +58,8 @@ public interface VertexList {
 		dst.normalX(dstIndex, normalX(srcIndex));
 		dst.normalY(dstIndex, normalY(srcIndex));
 		dst.normalZ(dstIndex, normalZ(srcIndex));
+
+		dst.lineWidth(dstIndex, lineWidth(srcIndex));
 	}
 
 	default void write(MutableVertexList dst, int srcStartIndex, int dstStartIndex, int vertexCount) {

@@ -1,5 +1,7 @@
 package dev.engine_room.flywheel.lib.visual.component;
 
+import net.minecraft.client.gui.components.debug.DebugScreenEntries;
+
 import org.joml.Quaternionf;
 
 import dev.engine_room.flywheel.api.model.Model;
@@ -85,9 +87,8 @@ public final class HitboxComponent implements EntityComponent {
 	public void beginFrame(DynamicVisual.Context context) {
 		recycler.resetCount();
 
-		var shouldRenderHitBoxes = Minecraft.getInstance()
-				.getEntityRenderDispatcher()
-				.shouldRenderHitBoxes();
+		boolean shouldRenderHitBoxes = Minecraft.getInstance().debugEntries
+				.isCurrentlyEnabled(DebugScreenEntries.ENTITY_HITBOXES);
 		if (shouldRenderHitBoxes && !entity.isInvisible() && !Minecraft.getInstance()
 				.showOnlyReducedInfo()) {
 			float partialTick = context.partialTick();

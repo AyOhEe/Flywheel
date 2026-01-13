@@ -2,6 +2,10 @@ package dev.engine_room.flywheel.lib.model;
 
 import java.util.Collection;
 
+import net.minecraft.client.renderer.rendertype.RenderType;
+
+import net.minecraft.client.renderer.rendertype.RenderTypes;
+
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
@@ -15,13 +19,13 @@ import dev.engine_room.flywheel.lib.material.Materials;
 import dev.engine_room.flywheel.lib.material.SimpleMaterial;
 import dev.engine_room.flywheel.lib.memory.MemoryBlock;
 import dev.engine_room.flywheel.lib.vertex.PosVertexView;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.Sheets;
 
 public final class ModelUtil {
 	private static final float BOUNDING_SPHERE_EPSILON = 1e-4f;
 
-	private static final RenderType[] CHUNK_LAYERS = new RenderType[]{RenderType.solid(), RenderType.cutoutMipped(), RenderType.cutout(), RenderType.translucent(), RenderType.tripwire()};
+	//NOTE cutout mipped no longer exists.
+	private static final RenderType[] CHUNK_LAYERS = new RenderType[]{RenderTypes.solidMovingBlock(), RenderTypes.cutoutMovingBlock(), RenderTypes.translucentMovingBlock(), RenderTypes.tripwireMovingBlock()};
 
 	// Array of chunk materials to make lookups easier.
 	// Index by (renderTypeIdx * 4 + shaded * 2 + ambientOcclusion).
@@ -90,14 +94,14 @@ public final class ModelUtil {
 			return Materials.SOLID_BLOCK;
 		}
 
-		if (renderType == Sheets.translucentCullBlockSheet() || renderType == Sheets.translucentItemSheet()) {
+		if (renderType == Sheets.translucentBlockItemSheet() || renderType == Sheets.translucentItemSheet()) {
 			return Materials.TRANSLUCENT_ENTITY;
 		}
 
-		if (renderType == RenderType.glint() || renderType == RenderType.glintTranslucent()) {
+		if (renderType == RenderTypes.glint() || renderType == RenderTypes.glintTranslucent()) {
 			return Materials.GLINT;
 		}
-		if (renderType == RenderType.entityGlint() || renderType == RenderType.entityGlintDirect()) {
+		if (renderType == RenderTypes.entityGlint() || renderType == RenderTypes.armorEntityGlint()) {
 			return Materials.GLINT_ENTITY;
 		}
 		return null;

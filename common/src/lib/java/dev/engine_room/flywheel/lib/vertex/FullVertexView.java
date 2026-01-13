@@ -5,7 +5,7 @@ import org.lwjgl.system.MemoryUtil;
 import dev.engine_room.flywheel.lib.math.DataPacker;
 
 public class FullVertexView extends AbstractVertexView {
-	public static final long STRIDE = 36;
+	public static final long STRIDE = 40;
 
 	@Override
 	public long stride() {
@@ -83,6 +83,11 @@ public class FullVertexView extends AbstractVertexView {
 	}
 
 	@Override
+	public float lineWidth(int index) {
+		return MemoryUtil.memGetFloat(ptr + index * STRIDE + 35);
+	}
+
+	@Override
 	public void x(int index, float x) {
 		MemoryUtil.memPutFloat(ptr + index * STRIDE, x);
 	}
@@ -150,5 +155,10 @@ public class FullVertexView extends AbstractVertexView {
 	@Override
 	public void normalZ(int index, float normalZ) {
 		MemoryUtil.memPutByte(ptr + index * STRIDE + 34, DataPacker.packNormI8(normalZ));
+	}
+
+	@Override
+	public void lineWidth(int index, float lineWidth) {
+		MemoryUtil.memPutFloat(ptr + index * STRIDE + 35, lineWidth);
 	}
 }

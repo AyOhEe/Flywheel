@@ -5,11 +5,12 @@ import java.util.function.BooleanSupplier;
 import java.util.function.Function;
 import java.util.function.IntSupplier;
 
+import net.minecraft.resources.Identifier;
+
 import org.jetbrains.annotations.Nullable;
 
 import dev.engine_room.flywheel.api.backend.Backend;
 import dev.engine_room.flywheel.api.backend.Engine;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.LevelAccessor;
 
 public final class SimpleBackend implements Backend {
@@ -68,7 +69,7 @@ public final class SimpleBackend implements Backend {
 			return this;
 		}
 
-		public Backend register(ResourceLocation id) {
+		public Backend register(Identifier id) {
 			Objects.requireNonNull(engineFactory);
 			Objects.requireNonNull(isSupported);
 

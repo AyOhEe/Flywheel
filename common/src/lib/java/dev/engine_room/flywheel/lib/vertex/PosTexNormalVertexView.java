@@ -5,7 +5,7 @@ import org.lwjgl.system.MemoryUtil;
 import dev.engine_room.flywheel.lib.math.DataPacker;
 
 public class PosTexNormalVertexView extends AbstractVertexView implements DefaultVertexList {
-	public static final long STRIDE = 23;
+	public static final long STRIDE = 27;
 
 	@Override
 	public long stride() {
@@ -53,6 +53,11 @@ public class PosTexNormalVertexView extends AbstractVertexView implements Defaul
 	}
 
 	@Override
+	public float lineWidth(int index) {
+		return MemoryUtil.memGetFloat(ptr + index * STRIDE + 23);
+	}
+
+	@Override
 	public void x(int index, float x) {
 		MemoryUtil.memPutFloat(ptr + index * STRIDE, x);
 	}
@@ -90,5 +95,10 @@ public class PosTexNormalVertexView extends AbstractVertexView implements Defaul
 	@Override
 	public void normalZ(int index, float normalZ) {
 		MemoryUtil.memPutByte(ptr + index * STRIDE + 22, DataPacker.packNormI8(normalZ));
+	}
+
+	@Override
+	public void lineWidth(int index, float lineWidth) {
+		MemoryUtil.memPutFloat(ptr + index * STRIDE + 23, lineWidth);
 	}
 }

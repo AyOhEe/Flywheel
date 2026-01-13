@@ -1,5 +1,7 @@
 package dev.engine_room.flywheel.lib.model.part;
 
+import com.mojang.blaze3d.vertex.VertexFormatElement;
+
 import org.lwjgl.system.MemoryUtil;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -49,6 +51,12 @@ class VertexWriter implements VertexConsumer {
 	}
 
 	@Override
+	public VertexConsumer setColor(int color) {
+		// ignore color
+		return this;
+	}
+
+	@Override
 	public VertexConsumer setUv(float u, float v) {
 		if (!filledTexture) {
 			long ptr = vertexPtr();
@@ -80,6 +88,13 @@ class VertexWriter implements VertexConsumer {
 			MemoryUtil.memPutByte(ptr + 22, DataPacker.packNormI8(z));
 			filledNormal = true;
 		}
+		return this;
+	}
+
+	@Override
+	public VertexConsumer setLineWidth(float lineWidth) {
+		MemoryUtil.memPutFloat(23, lineWidth);
+
 		return this;
 	}
 

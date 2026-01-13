@@ -75,6 +75,11 @@ public interface DefaultVertexList extends MutableVertexList {
 	}
 
 	@Override
+	default float lineWidth(int index) {
+		return 0.0f;
+	}
+
+	@Override
 	default void x(int index, float x) {
 	}
 
@@ -128,5 +133,9 @@ public interface DefaultVertexList extends MutableVertexList {
 
 	@Override
 	default void normalZ(int index, float normalZ) {
+	}
+
+	@Override
+	default void lineWidth(int index, float lineWidth) {
 	}
 }

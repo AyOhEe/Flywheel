@@ -28,4 +28,6 @@ public interface MutableVertexList extends VertexList {
 	void normalY(int index, float normalY);
 
 	void normalZ(int index, float normalZ);
+
+	void lineWidth(int index, float lineWidth);
 }

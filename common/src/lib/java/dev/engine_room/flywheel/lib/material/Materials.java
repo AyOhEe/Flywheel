@@ -56,7 +56,7 @@ public final class Materials {
 			.build();
 
 	public static final Material GLINT_ENTITY = SimpleMaterial.builderOf(GLINT)
-			.texture(ItemRenderer.ENCHANTED_GLINT_ENTITY)
+			.texture(ItemRenderer.ENCHANTED_GLINT_ARMOR)
 			.build();
 
 	public static final Material TRANSLUCENT_ENTITY = SimpleMaterial.builder()
