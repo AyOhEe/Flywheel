@@ -2,6 +2,8 @@ package dev.engine_room.flywheel.lib.model.baked;
 
 import java.util.function.BiFunction;
 
+import net.minecraft.client.renderer.rendertype.RenderType;
+
 import org.jetbrains.annotations.Nullable;
 
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -10,13 +12,12 @@ import dev.engine_room.flywheel.api.material.Material;
 import dev.engine_room.flywheel.lib.internal.FlwLibXplat;
 import dev.engine_room.flywheel.lib.model.ModelUtil;
 import dev.engine_room.flywheel.lib.model.SimpleModel;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.resources.model.ResolvedModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockAndTintGetter;
 
 public final class BakedModelBuilder {
-	final BakedModel bakedModel;
+	final ResolvedModel bakedModel;
 	@Nullable
 	BlockAndTintGetter level;
 	@Nullable
@@ -26,7 +27,7 @@ public final class BakedModelBuilder {
 	@Nullable
 	BlockMaterialFunction materialFunc;
 
-	public BakedModelBuilder(BakedModel bakedModel) {
+	public BakedModelBuilder(ResolvedModel bakedModel) {
 		this.bakedModel = bakedModel;
 	}
 

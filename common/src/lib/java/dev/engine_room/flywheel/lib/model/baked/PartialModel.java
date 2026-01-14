@@ -2,14 +2,15 @@ package dev.engine_room.flywheel.lib.model.baked;
 
 import java.util.concurrent.ConcurrentMap;
 
+import net.minecraft.client.resources.model.ResolvedModel;
+
 import org.jetbrains.annotations.UnknownNullability;
 
 import com.google.common.collect.MapMaker;
 
 import dev.engine_room.flywheel.lib.internal.FlwLibXplat;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.model.BakedModel;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 /**
  * A helper class for loading and accessing JSON models not directly used by any blocks or items.
@@ -19,14 +20,14 @@ import net.minecraft.resources.ResourceLocation;
  * Once Minecraft has finished baking all models, all PartialModels will have their bakedModel fields populated.
  */
 public final class PartialModel {
-	static final ConcurrentMap<ResourceLocation, PartialModel> ALL = new MapMaker().weakValues().makeMap();
+	static final ConcurrentMap<Identifier, PartialModel> ALL = new MapMaker().weakValues().makeMap();
 	static boolean populateOnInit = false;
 
-	private final ResourceLocation modelLocation;
+	private final Identifier modelLocation;
 	@UnknownNullability
-	BakedModel bakedModel;
+	ResolvedModel bakedModel;
 
-	private PartialModel(ResourceLocation modelLocation) {
+	private PartialModel(Identifier modelLocation) {
 		this.modelLocation = modelLocation;
 
 		if (populateOnInit) {
@@ -34,16 +35,16 @@ public final class PartialModel {
 		}
 	}
 
-	public static PartialModel of(ResourceLocation modelLocation) {
+	public static PartialModel of(Identifier modelLocation) {
 		return ALL.computeIfAbsent(modelLocation, PartialModel::new);
 	}
 
 	@UnknownNullability
-	public BakedModel get() {
+	public ResolvedModel get() {
 		return bakedModel;
 	}
 
-	public ResourceLocation modelLocation() {
+	public Identifier modelLocation() {
 		return modelLocation;
 	}
 }

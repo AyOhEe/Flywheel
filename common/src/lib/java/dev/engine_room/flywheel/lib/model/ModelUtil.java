@@ -2,9 +2,12 @@ package dev.engine_room.flywheel.lib.model;
 
 import java.util.Collection;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.rendertype.RenderType;
 
 import net.minecraft.client.renderer.rendertype.RenderTypes;
+
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
@@ -61,6 +64,10 @@ public final class ModelUtil {
 	@Nullable
 	public static Material getMaterial(RenderType chunkRenderType, boolean shaded) {
 		return getMaterial(chunkRenderType, shaded, true);
+	}
+
+	public static TextureAtlasSprite getSprite(net.minecraft.client.resources.model.Material material) {
+		return Minecraft.getInstance().getAtlasManager().get(material);
 	}
 
 	@Nullable

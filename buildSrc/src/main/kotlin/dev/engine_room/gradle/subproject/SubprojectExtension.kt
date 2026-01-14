@@ -3,6 +3,7 @@ package dev.engine_room.gradle.subproject
 import net.fabricmc.loom.api.LoomGradleExtensionAPI
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
+import org.gradle.api.file.DuplicatesStrategy
 import org.gradle.api.plugins.BasePluginExtension
 import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.publish.PublishingExtension
@@ -138,6 +139,7 @@ open class SubprojectExtension(val project: Project) {
             withType<Jar>().configureEach {
                 from("${project.rootDir}/LICENSE.md") {
                     into("META-INF")
+                    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
                 }
             }
 

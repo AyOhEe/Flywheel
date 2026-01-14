@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import dev.engine_room.flywheel.lib.model.ModelUtil;
+
 import org.jetbrains.annotations.Nullable;
 
 import dev.engine_room.flywheel.api.material.Material;
@@ -18,7 +20,7 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 
 public final class ModelTrees {
 	private static final RendererReloadCache<ModelTreeKey, ModelTree> CACHE = new RendererReloadCache<>(k -> {
-		ModelTree tree = convert("", MeshTree.of(k.layer), k.pathsToPrune, k.texture != null ? k.texture.sprite() : null, k.material);
+		ModelTree tree = convert("", MeshTree.of(k.layer), k.pathsToPrune, k.texture != null ? ModelUtil.getSprite(k.texture) : null, k.material);
 
 		if (tree == null) {
 			throw new IllegalArgumentException("Cannot prune root node!");

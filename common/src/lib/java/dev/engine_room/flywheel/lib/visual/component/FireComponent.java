@@ -1,5 +1,6 @@
 package dev.engine_room.flywheel.lib.visual.component;
 
+import dev.engine_room.flywheel.lib.model.ModelUtil;
 import net.minecraft.client.Minecraft;
 
 import org.joml.Vector4f;
@@ -40,7 +41,7 @@ public final class FireComponent implements EntityComponent {
 	// and because sprites are invalidated after a resource reload.
 	// TODO I'm not sure this is so heavy now. This boils down to a map lookup.
 	private static final RendererReloadCache<net.minecraft.client.resources.model.Material, Model> FIRE_MODELS = new RendererReloadCache<>(texture -> {
-		return new SingleMeshModel(new FireMesh(Minecraft.getInstance().getAtlasManager().get(texture)), FIRE_MATERIAL);
+		return new SingleMeshModel(new FireMesh(ModelUtil.getSprite(texture)), FIRE_MATERIAL);
 	});
 
 	private final VisualizationContext context;

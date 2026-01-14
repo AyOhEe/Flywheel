@@ -2,6 +2,8 @@ package dev.engine_room.flywheel.lib.model.baked;
 
 import java.util.Arrays;
 
+import net.minecraft.client.renderer.rendertype.RenderType;
+
 import org.jetbrains.annotations.UnknownNullability;
 
 import com.google.common.collect.ImmutableList;
@@ -11,7 +13,6 @@ import com.mojang.blaze3d.vertex.ByteBufferBuilder;
 import dev.engine_room.flywheel.api.material.Material;
 import dev.engine_room.flywheel.api.model.Mesh;
 import dev.engine_room.flywheel.api.model.Model;
-import net.minecraft.client.renderer.RenderType;
 
 class MeshEmitter {
 	private static final int INITIAL_CAPACITY = 1;

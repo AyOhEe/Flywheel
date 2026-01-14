@@ -2,6 +2,10 @@ package dev.engine_room.flywheel.lib.model.baked;
 
 import java.util.function.BiFunction;
 
+import net.minecraft.client.renderer.rendertype.RenderType;
+
+import net.minecraft.client.renderer.rendertype.RenderTypes;
+
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.UnknownNullability;
 
@@ -13,10 +17,10 @@ import dev.engine_room.flywheel.api.model.Model;
 import dev.engine_room.flywheel.lib.model.SimpleModel;
 import it.unimi.dsi.fastutil.objects.Reference2ReferenceArrayMap;
 import it.unimi.dsi.fastutil.objects.Reference2ReferenceMap;
-import net.minecraft.client.renderer.RenderType;
 
 class MeshEmitterManager<T extends MeshEmitter> {
-	private static final RenderType[] CHUNK_LAYERS = RenderType.chunkBufferLayers().toArray(RenderType[]::new);
+	//NOTE cutout mipped no longer exists.
+	private static final RenderType[] CHUNK_LAYERS = new RenderType[]{RenderTypes.solidMovingBlock(), RenderTypes.cutoutMovingBlock(), RenderTypes.translucentMovingBlock(), RenderTypes.tripwireMovingBlock()};
 
 	private final Reference2ReferenceMap<RenderType, T> emitterMap = new Reference2ReferenceArrayMap<>();
 	private final ByteBufferBuilderStack byteBufferBuilderStack = new ByteBufferBuilderStack();
