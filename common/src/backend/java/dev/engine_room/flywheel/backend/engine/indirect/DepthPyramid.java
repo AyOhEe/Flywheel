@@ -1,14 +1,22 @@
 package dev.engine_room.flywheel.backend.engine.indirect;
 
+import com.mojang.blaze3d.opengl.GlStateManager;
+
+import com.mojang.blaze3d.opengl.GlTexture;
+import com.mojang.blaze3d.textures.GpuTexture;
+
+import dev.engine_room.flywheel.api.Flywheel;
+
+import org.jspecify.annotations.Nullable;
 import org.lwjgl.opengl.GL32;
 import org.lwjgl.opengl.GL46;
-
-import com.mojang.blaze3d.platform.GlStateManager;
 
 import dev.engine_room.flywheel.backend.compile.IndirectPrograms;
 import dev.engine_room.flywheel.backend.gl.GlTextureUnit;
 import dev.engine_room.flywheel.lib.math.MoreMath;
 import net.minecraft.client.Minecraft;
+
+import static dev.engine_room.flywheel.backend.FlwBackend.LOGGER;
 
 public class DepthPyramid {
 	private final IndirectPrograms programs;
@@ -32,12 +40,18 @@ public class DepthPyramid {
 
 		createPyramidMips(mipLevels, width, height);
 
-		int depthBufferId = mainRenderTarget.getDepthTextureId();
+		GpuTexture depthBuffer = mainRenderTarget.getDepthTexture();
+		if (!(depthBuffer instanceof GlTexture glTexture)) {
+			// Fairly safe assumption for the time being.
+			// TODO do not do this shit
+			LOGGER.error("depthBuffer in DepthPyramid::generate was not a GlTexture!");
+			return;
+		}
 
 		GL46.glMemoryBarrier(GL46.GL_FRAMEBUFFER_BARRIER_BIT);
 
 		GlTextureUnit.T0.makeActive();
-		GlStateManager._bindTexture(depthBufferId);
+		GlStateManager._bindTexture(glTexture.glId());
 
 		var downsampleFirstProgram = programs.getDownsampleFirstProgram();
 		downsampleFirstProgram.bind();

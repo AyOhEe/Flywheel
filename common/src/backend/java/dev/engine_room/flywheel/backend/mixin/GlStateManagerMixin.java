@@ -1,13 +1,13 @@
 package dev.engine_room.flywheel.backend.mixin;
 
+import com.mojang.blaze3d.opengl.GlStateManager;
+
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import com.mojang.blaze3d.platform.GlStateManager;
 
 import dev.engine_room.flywheel.backend.engine.uniform.LevelUniforms;
 import dev.engine_room.flywheel.backend.gl.GlStateTracker;

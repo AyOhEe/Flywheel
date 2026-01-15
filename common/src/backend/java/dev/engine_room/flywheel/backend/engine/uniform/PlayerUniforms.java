@@ -1,5 +1,7 @@
 package dev.engine_room.flywheel.backend.engine.uniform;
 
+import net.minecraft.util.ARGB;
+
 import org.jetbrains.annotations.Nullable;
 
 import dev.engine_room.flywheel.api.backend.RenderContext;
@@ -10,7 +12,6 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.multiplayer.PlayerInfo;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
-import net.minecraft.util.FastColor;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -65,9 +66,9 @@ public final class PlayerUniforms extends UniformWriter {
 			Integer color = team.getColor().getColor();
 
 			if (color != null) {
-				int red = FastColor.ARGB32.red(color);
-				int green = FastColor.ARGB32.green(color);
-				int blue = FastColor.ARGB32.blue(color);
+				int red = ARGB.red(color);
+				int green = ARGB.green(color);
+				int blue = ARGB.blue(color);
 				return writeVec4(ptr, red / 255f, green / 255f, blue / 255f, 1f);
 			} else {
 				return writeVec4(ptr, 1f, 1f, 1f, 1f);
@@ -78,10 +79,11 @@ public final class PlayerUniforms extends UniformWriter {
 	}
 
 	private static long writeEyeBrightness(long ptr, LocalPlayer player) {
-		ClientLevel level = player.clientLevel;
+		ClientLevel level = Minecraft.getInstance().level;
 		int blockBrightness = level.getBrightness(LightLayer.BLOCK, player.blockPosition());
 		int skyBrightness = level.getBrightness(LightLayer.SKY, player.blockPosition());
-		int maxBrightness = level.getMaxLightLevel();
+		//TODO this sucks. Has to be a way to acquire this and not hardcode it. Still, very unlikely to change
+		int maxBrightness = 15;
 
 		return writeVec2(ptr, (float) blockBrightness / (float) maxBrightness,
 				(float) skyBrightness / (float) maxBrightness);
@@ -95,7 +97,7 @@ public final class PlayerUniforms extends UniformWriter {
 			if (handItem instanceof BlockItem blockItem) {
 				Block block = blockItem.getBlock();
 				int blockLight = FlwBackendXplat.INSTANCE
-						.getLightEmission(block.defaultBlockState(), player.clientLevel, player.blockPosition());
+						.getLightEmission(block.defaultBlockState(), Minecraft.getInstance().level, player.blockPosition());
 				if (heldLight < blockLight) {
 					heldLight = blockLight;
 				}
@@ -106,7 +108,7 @@ public final class PlayerUniforms extends UniformWriter {
 	}
 
 	private static long writeEyeIn(long ptr, LocalPlayer player) {
-		ClientLevel level = player.clientLevel;
+		ClientLevel level = Minecraft.getInstance().level;
 		Vec3 eyePos = player.getEyePosition();
 		BlockPos blockPos = BlockPos.containing(eyePos);
 		return writeInFluidAndBlock(ptr, level, blockPos, eyePos);

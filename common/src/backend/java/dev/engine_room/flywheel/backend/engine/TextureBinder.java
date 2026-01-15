@@ -4,11 +4,11 @@ import com.mojang.blaze3d.systems.RenderSystem;
 
 import dev.engine_room.flywheel.backend.Samplers;
 import net.minecraft.client.Minecraft;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public class TextureBinder {
-	public static void bind(ResourceLocation resourceLocation) {
-		RenderSystem.bindTexture(byName(resourceLocation));
+	public static void bind(Identifier Identifier) {
+		RenderSystem.bindTexture(byName(Identifier));
 	}
 
 	public static void bindLightAndOverlay() {
@@ -40,7 +40,7 @@ public class TextureBinder {
 	 * @param texture The texture's resource location.
 	 * @return The texture.
 	 */
-	public static int byName(ResourceLocation texture) {
+	public static int byName(Identifier texture) {
 		return Minecraft.getInstance()
 				.getTextureManager()
 				.getTexture(texture)

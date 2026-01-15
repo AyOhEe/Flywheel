@@ -4,11 +4,12 @@ import java.util.Arrays;
 import java.util.BitSet;
 import java.util.List;
 
+import net.minecraft.util.Util;
+
 import org.lwjgl.opengl.GL45C;
 import org.lwjgl.system.Checks;
 
 import dev.engine_room.flywheel.backend.gl.GlCompat;
-import net.minecraft.Util;
 
 public class GlVertexArrayDSA extends GlVertexArray {
 	public static final boolean SUPPORTED = isSupported();

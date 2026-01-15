@@ -1,8 +1,10 @@
 package dev.engine_room.flywheel.backend.gl;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+
+import com.mojang.blaze3d.opengl.GlStateManager;
 
 import dev.engine_room.flywheel.backend.gl.buffer.GlBufferType;
+import dev.engine_room.flywheel.backend.mixin.GLStateManagerAccessor;
 
 /**
  * Tracks bound buffers/vbos because GlStateManager doesn't do that for us.
@@ -37,7 +39,7 @@ public class GlStateTracker {
 	}
 
 	public static State getRestoreState() {
-		return new State(BUFFERS.clone(), vao, program, GlStateManager._getActiveTexture());
+		return new State(BUFFERS.clone(), vao, program, GlTexture.getActiveTexture());
 	}
 
 	public static void bindVao(int vao) {

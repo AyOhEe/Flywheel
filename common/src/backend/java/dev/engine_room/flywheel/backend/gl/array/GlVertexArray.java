@@ -2,9 +2,12 @@ package dev.engine_room.flywheel.backend.gl.array;
 
 import java.util.List;
 
+import com.mojang.blaze3d.systems.RenderSystem;
+
+import org.lwjgl.opengl.GL30;
 import org.lwjgl.opengl.GL32;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.opengl.GlStateManager;
 
 import dev.engine_room.flywheel.backend.gl.GlObject;
 import dev.engine_room.flywheel.backend.gl.GlStateTracker;
@@ -41,6 +44,12 @@ public abstract class GlVertexArray extends GlObject {
 
 	@Override
 	protected void deleteInternal(int handle) {
-		GlStateManager._glDeleteVertexArrays(handle);
+		_glDeleteVertexArrays(handle);
+	}
+
+	// Lifted from a prior implementation in GlStateManager
+	private static void _glDeleteVertexArrays(int array) {
+		RenderSystem.assertOnRenderThread();
+		GL30.glDeleteVertexArrays(array);
 	}
 }
