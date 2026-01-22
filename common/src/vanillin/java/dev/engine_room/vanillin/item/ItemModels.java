@@ -68,9 +68,6 @@ public class ItemModels {
 			Minecraft.getInstance().font
 	);
 
-	private static @Nullable ItemStack MODEL_ITEM_STACK = null;
-	private static @Nullable ClientLevel MODEL_LEVEL = null;
-
 	public static boolean isSupported(ItemStack stack) {
 		return !stack.is(NO_INSTANCING) && doesNotHaveItemColors(stack.getItem());// && isValidItemState(stack);
 	}
@@ -99,29 +96,27 @@ public class ItemModels {
 
 		var model = getModel(itemStack);
 
-
-		MODEL_LEVEL = clientLevel;
-		MODEL_ITEM_STACK = itemStack;
-		return bakeModel(model, displayContext, outlineColor, itemStack.hasFoil());
+		return bakeModel(model, displayContext, outlineColor, itemStack.hasFoil(), itemStack, clientLevel);
 	}
 
-	public static Model bakeModel(ItemModel model, ItemDisplayContext displayContext, int outlineColor, boolean foil) {
+	//TODO this SUCKS - doesn't cache
+	public static Model bakeModel(ItemModel model, ItemDisplayContext displayContext, int outlineColor, boolean foil, ItemStack stack, ClientLevel level) {
 		//var mesh = MESH_CACHE.get(new BakedMeshKey(model, displayContext));
 
 
 		ItemStackRenderState renderState = new ItemStackRenderState();
 		PoseStack poseStack = new PoseStack();
 
-		model.update(renderState, MODEL_ITEM_STACK, Minecraft.getInstance().getItemModelResolver(), displayContext, MODEL_LEVEL, null, 0);
+		model.update(renderState, stack, Minecraft.getInstance().getItemModelResolver(), displayContext, level, null, 0);
 		renderState.submit(poseStack, SUBMIT_STORAGE, 0, OverlayTexture.NO_OVERLAY, outlineColor);
 		FEATURE_RENDERER.renderAllFeatures();
 
-		Buffers.CRUMBLING_BUFFER.popAllMeshes(); // Probably empty. We're working with items. Best to check it anyway.
+		Buffers.CRUMBLING_BUFFER.popAllMeshes(); // Probably empty. We're working with items. Best to clear it anyway.
 		var meshes = Buffers.RENDER_BUFFER.popAllMeshes();
 		var outlineMeshes = Buffers.OUTLINE_BUFFER.popAllMeshes();
 		List<Model.ConfiguredMesh> allMeshes = Stream.concat(meshes.stream(), outlineMeshes.stream()).toList();
 
-		if (MODEL_ITEM_STACK.getItem() instanceof BlockItem) {
+		if (stack.getItem() instanceof BlockItem) {
 			allMeshes = allMeshes.stream().map((cMesh) -> {
 				var newMaterial = SimpleMaterial.builderOf(cMesh.material())
 						.transparency(Transparency.ORDER_INDEPENDENT)
@@ -129,9 +124,6 @@ public class ItemModels {
 				return new Model.ConfiguredMesh(newMaterial, cMesh.mesh());
 			}).toList();
 		}
-
-		MODEL_ITEM_STACK = null;
-		MODEL_LEVEL = null;
 
 		return new SimpleModel(foil ? applyGlintToMeshes(allMeshes) : allMeshes);
 	}
