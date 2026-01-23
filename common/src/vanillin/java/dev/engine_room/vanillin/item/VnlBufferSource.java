@@ -37,7 +37,6 @@ public class VnlBufferSource extends MultiBufferSource.BufferSource {
 		super(sharedBuffer, fixedBuffers);
 	}
 
-	//TODO unfuck
 	@Override
 	public VertexConsumer getBuffer(RenderType renderType) {
 		VnlVertexStorage vertexStorage = vnlStartedBuilders.get(renderType);
@@ -48,27 +47,16 @@ public class VnlBufferSource extends MultiBufferSource.BufferSource {
 
 		if (vertexStorage != null) {
 			return vertexStorage;
-		} else {
-			ByteBufferBuilder byteBufferBuilder = fixedBuffers.get(renderType);
-			if (byteBufferBuilder != null) {
-				vertexStorage = new VnlVertexStorage();
-			} else {
-				if (lastSharedType != null) {
-					endBatch(this.lastSharedType);
-				}
-
-				lastSharedType = renderType;
-			}
-
-			vertexStorage = new VnlVertexStorage();
-			vnlStartedBuilders.put(renderType, vertexStorage);
-			return vertexStorage;
 		}
+
+		vertexStorage = new VnlVertexStorage();
+		vnlStartedBuilders.put(renderType, vertexStorage);
+		return vertexStorage;
 	}
 
 	@Override
 	public void endBatch(RenderType renderType) {
-		VnlVertexStorage vertexStorage = this.startedBuilders.remove(renderType);
+		VnlVertexStorage vertexStorage = this.vnlStartedBuilders.remove(renderType);
 		if (vertexStorage != null) {
 			emitMesh(renderType, vertexStorage);
 		}
