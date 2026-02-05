@@ -1,5 +1,6 @@
 package dev.engine_room.vanillin.item;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.SequencedMap;
 import java.util.function.Consumer;
@@ -110,6 +111,10 @@ public class ItemModels {
 		model.update(renderState, stack, Minecraft.getInstance().getItemModelResolver(), displayContext, level, null, 0);
 		renderState.submit(poseStack, SUBMIT_STORAGE, 0, OverlayTexture.NO_OVERLAY, outlineColor);
 		FEATURE_RENDERER.renderAllFeatures();
+
+		Buffers.OUTLINE_BUFFER.endOutlineBatch();
+		Buffers.CRUMBLING_BUFFER.endBatch();
+		Buffers.RENDER_BUFFER.endBatch();
 
 		Buffers.CRUMBLING_BUFFER.popAllMeshes(); // Probably empty. We're working with items. Best to clear it anyway.
 		var meshes = Buffers.RENDER_BUFFER.popAllMeshes();
