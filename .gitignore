@@ -66,3 +66,4 @@ docs/*.local
 mcmodsrepo
 src/*/generatedPackageInfos/
 */src/*/generatedPackageInfos/
+/buildSrc/.kotlin/sessions

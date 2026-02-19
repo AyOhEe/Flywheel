@@ -2,7 +2,8 @@ plugins {
     idea
     java
     `maven-publish`
-    id("dev.architectury.loom")
+    id("net.neoforged.moddev")
+    id("net.fabricmc.fabric-loom-companion")
     id("flywheel.subproject")
     id("flywheel.platform")
 }

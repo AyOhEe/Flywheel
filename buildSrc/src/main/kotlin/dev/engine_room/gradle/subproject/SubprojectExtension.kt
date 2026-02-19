@@ -53,7 +53,8 @@ open class SubprojectExtension(val project: Project) {
 
     private fun setupLoom() {
         val loom = project.the<LoomGradleExtensionAPI>()
-        loom.silentMojangMappingsLicense()
+        //TODO 26.1
+        //loom.silentMojangMappingsLicense()
     }
 
     private fun setupJava() {
@@ -105,11 +106,12 @@ open class SubprojectExtension(val project: Project) {
 
             add("minecraft", "com.mojang:minecraft:${minecraft_version}")
 
-            add("mappings", loom.layered {
-                officialMojangMappings { nameSyntheticMembers = false }
-                if (parchment_version != "none")
-                    parchment("org.parchmentmc.data:parchment-${parchment_minecraft_version}:${parchment_version}@zip")
-            })
+            //TODO 26.1
+//            add("mappings", loom.layered {
+//                officialMojangMappings { nameSyntheticMembers = false }
+//                if (parchment_version != "none")
+//                    parchment("org.parchmentmc.data:parchment-${parchment_minecraft_version}:${parchment_version}@zip")
+//            })
 
             add("api", "com.google.code.findbugs:jsr305:3.0.2")
         }

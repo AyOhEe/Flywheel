@@ -2,7 +2,7 @@ plugins {
     idea
     java
     `maven-publish`
-    id("dev.architectury.loom")
+    id("net.fabricmc.fabric-loom")
     id("flywheel.subproject")
 }
 
@@ -114,6 +114,7 @@ jarSets {
         }
     }
 }
+
 
 repositories {
     maven("https://maven.caffeinemc.net/releases/")

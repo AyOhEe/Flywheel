@@ -1,7 +1,8 @@
 plugins {
     idea
     java
-    id("dev.architectury.loom") apply false
+    id("net.fabricmc.fabric-loom")  apply false
+    id("net.neoforged.moddev") version "2.0.140" apply false
 }
 
 println("Java: ${System.getProperty("java.version")}, JVM: ${System.getProperty("java.vm.version")} (${System.getProperty("java.vendor")}), Arch: ${System.getProperty("os.arch")}")
