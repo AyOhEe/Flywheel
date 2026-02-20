@@ -53,7 +53,8 @@ open class SubprojectExtension(val project: Project) {
 
     private fun setupLoom() {
         val loom = project.the<LoomGradleExtensionAPI>()
-        loom.silentMojangMappingsLicense()
+        //TODO archless
+        //loom.silentMojangMappingsLicense()
     }
 
     private fun setupJava() {

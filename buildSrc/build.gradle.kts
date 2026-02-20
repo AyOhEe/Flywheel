@@ -43,5 +43,5 @@ val properties by lazy {
 }
 
 dependencies {
-    implementation("dev.architectury.loom:dev.architectury.loom.gradle.plugin:${properties["arch_loom_version"]}")
+    implementation("fabric-loom:fabric-loom.gradle.plugin:${properties["loom_version"]}")
 }

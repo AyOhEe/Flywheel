@@ -2,7 +2,7 @@ plugins {
     idea
     java
     `maven-publish`
-    id("dev.architectury.loom")
+    id("fabric-loom")
     id("flywheel.subproject")
     id("flywheel.platform")
 }
