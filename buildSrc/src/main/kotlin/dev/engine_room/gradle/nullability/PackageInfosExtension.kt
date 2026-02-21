@@ -1,9 +1,13 @@
 package dev.engine_room.gradle.nullability
 
+import net.neoforged.moddevgradle.dsl.ModDevExtension
 import org.gradle.api.Project
 import org.gradle.api.tasks.Delete
 import org.gradle.api.tasks.SourceSet
+import org.gradle.api.tasks.TaskProvider
+import org.gradle.kotlin.dsl.findByType
 import org.gradle.kotlin.dsl.register
+import org.gradle.kotlin.dsl.the
 
 open class PackageInfosExtension(private val project: Project) {
     fun sources(vararg sourceSets: SourceSet) {
@@ -28,8 +32,16 @@ open class PackageInfosExtension(private val project: Project) {
         }
         sourceSet.java.srcDir(task)
 
-        project.tasks.named("ideaSyncTask").configure {
-            finalizedBy(task)
+        // Fabric
+        if (project.tasks.findByName("ideaSyncTask") != null) {
+            project.tasks.named("ideaSyncTask").configure {
+                finalizedBy(task)
+            }
+        }
+        // MDG
+        // TODO confirm works?
+        if (project.extensions.findByType<ModDevExtension>() != null) {
+            project.the<ModDevExtension>().ideSyncTask(task)
         }
 
         val cleanTask = project.tasks.register<Delete>(sourceSet.getTaskName("clean", "PackageInfos")) {
