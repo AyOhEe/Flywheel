@@ -11,8 +11,8 @@ repositories {
     maven("https://maven.neoforged.net/releases/") {
         name = "NeoForged"
     }
-    maven("https://maven.architectury.dev/") {
-        name = "Architectury"
+    maven("https://maven.fabricmc.net/") {
+        name = "Fabric"
     }
     maven("https://repo.spongepowered.org/repository/maven-public")
     maven("https://maven.parchmentmc.org")
@@ -44,4 +44,5 @@ val properties by lazy {
 
 dependencies {
     implementation("fabric-loom:fabric-loom.gradle.plugin:${properties["loom_version"]}")
+    implementation("net.neoforged.moddev:net.neoforged.moddev.gradle.plugin:${properties["mdg_version"]}")
 }
