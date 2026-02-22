@@ -62,7 +62,7 @@ transitiveSourceSets {
     createCompileConfigurations()
 }
 
-platform {
+platformLoom {
     setupLoomMod(api, lib, backend, main)
     setupLoomRuns()
     setupTestMod(testMod)

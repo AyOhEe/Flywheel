@@ -12,7 +12,7 @@ import org.gradle.kotlin.dsl.register
 import org.gradle.kotlin.dsl.the
 import java.io.File
 
-open class PlatformExtension(val project: Project) {
+open class LoomPlatformExtension(val project: Project) {
     fun setupLoomMod(vararg sourceSets: SourceSet) {
         project.the<LoomGradleExtensionAPI>().mods.maybeCreate("main").apply {
             sourceSets.forEach(::sourceSet)

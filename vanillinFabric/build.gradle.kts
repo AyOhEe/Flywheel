@@ -14,7 +14,7 @@ subproject.init("vanillin-fabric", "vanillin_group", "vanillin_version")
 
 val main = sourceSets.getByName("main")
 
-platform {
+platformLoom {
     setupLoomRuns()
 }
 
