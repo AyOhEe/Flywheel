@@ -1,16 +1,19 @@
 package dev.engine_room.gradle.nullability
 
-import net.neoforged.moddevgradle.dsl.ModDevExtension
 import org.gradle.api.Project
 import org.gradle.api.tasks.Delete
 import org.gradle.api.tasks.SourceSet
-import org.gradle.api.tasks.TaskProvider
-import org.gradle.kotlin.dsl.findByType
 import org.gradle.kotlin.dsl.register
-import org.gradle.kotlin.dsl.the
 
+// Copied from https://github.com/Creators-of-Create/Ponder/blob/mc26.1/dev/build-logic/src/main/kotlin/net/createmod/pondergradle/nullability/PackageInfosExtension.kt
 open class PackageInfosExtension(private val project: Project) {
     fun sources(vararg sourceSets: SourceSet) {
+        for (sourceSet in sourceSets) {
+            forSourceSet(sourceSet)
+        }
+    }
+
+    fun sources(sourceSets: Iterable<SourceSet>) {
         for (sourceSet in sourceSets) {
             forSourceSet(sourceSet)
         }
@@ -32,16 +35,8 @@ open class PackageInfosExtension(private val project: Project) {
         }
         sourceSet.java.srcDir(task)
 
-        // Fabric
-        if (project.tasks.findByName("ideaSyncTask") != null) {
-            project.tasks.named("ideaSyncTask").configure {
-                finalizedBy(task)
-            }
-        }
-        // MDG
-        // TODO confirm works?
-        if (project.extensions.findByType<ModDevExtension>() != null) {
-            project.the<ModDevExtension>().ideSyncTask(task)
+        project.tasks.matching { it.name == "ideaSyncTask" || it.name == "neoForgeIdeSync" }.configureEach {
+            finalizedBy(task)
         }
 
         val cleanTask = project.tasks.register<Delete>(sourceSet.getTaskName("clean", "PackageInfos")) {
