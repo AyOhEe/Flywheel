@@ -53,4 +53,6 @@ open class MDGPlatformExtension(val project: Project) {
 
         project.the<NeoForgeExtension>().runs.addAll(listOf(client, server))
     }
+
+    //TODO archless: test mod
 }

@@ -10,19 +10,20 @@ plugins {
 val common = ":common"
 val platform = ":neoforge"
 
-subproject.init("vanillin-neoforge", "vanillin_group", "vanillin_version")
+//subproject.init("vanillin-neoforge", "vanillin_group", "vanillin_version")
 
 val main = sourceSets.getByName("main")
 
-platform {
-    setupLoomRuns()
+platformMDG {
+    setupMDGMod(main)
+    setupMDGRuns()
 }
 
 transitiveSourceSets {
     sourceSet(main) {
         compileClasspath(project(platform), "api", "lib", "main")
 
-        bundleFrom(project(common), "vanillin")
+        //bundleFrom(project(common), "vanillin")
     }
 }
 
@@ -49,26 +50,30 @@ tasks.withType<ProcessResources>().configureEach {
     }
 }
 
-jarSets {
-    mainSet.publishWithRawSources {
-        artifactId = "vanillin-neoforge-${property("artifact_minecraft_version")}"
-    }
-}
+//jarSets {
+//    mainSet.publishWithRawSources {
+//        artifactId = "vanillin-neoforge-${property("artifact_minecraft_version")}"
+//    }
+//}
 
 defaultPackageInfos {
     sources(main)
 }
 
-loom {
-    mixin {
-        useLegacyMixinAp = true
-        add(main, "vanillin.refmap.json")
-    }
+//loom {
+//    mixin {
+//        useLegacyMixinAp = true
+//        add(main, "vanillin.refmap.json")
+//    }
+//}
+
+neoForge {
+    version = "21.11.0-beta"
 
     runs {
         configureEach {
-            property("forge.logging.markers", "")
-            property("forge.logging.console.level", "debug")
+            systemProperty("forge.logging.markers", "")
+            systemProperty("forge.logging.console.level", "debug")
         }
     }
 }
@@ -76,12 +81,18 @@ loom {
 repositories {
     maven("https://maven.neoforged.net/releases/")
     maven("https://maven.caffeinemc.net/releases/")
+
+    //TODO archless: add in subproject extension
+    maven("https://api.modrinth.com/maven") {
+        name = "Modrinth"
+        content {
+            includeGroup("maven.modrinth")
+        }
+    }
 }
 
 dependencies {
-    neoForge("net.neoforged:neoforge:${property("neoforge_version")}")
-
-    modCompileOnly("net.caffeinemc:sodium-neoforge-api:${property("sodium_version")}")
+    compileOnly("net.caffeinemc:sodium-neoforge-api:${property("sodium_version")}")
 
     compileOnly(project(path = common, configuration = "vanillinClasses"))
     compileOnly(project(path = common, configuration = "vanillinResources"))
@@ -91,6 +102,6 @@ dependencies {
     compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:0.4.1")!!)
 
     // JiJ flywheel proper
-    include(project(path = platform, configuration = "flywheelRemap"))
+    jarJar(project(path = platform, configuration = "flywheelRemap"))
     runtimeOnly(project(path = platform, configuration = "flywheelDev"))
 }

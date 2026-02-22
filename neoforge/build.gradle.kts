@@ -10,7 +10,7 @@ plugins {
 val common = ":common"
 val commonProject = project(common)
 
-subproject.init("flywheel-neoforge", "flywheel_group", "flywheel_version")
+//subproject.init("flywheel-neoforge", "flywheel_group", "flywheel_version")
 
 val api = sourceSets.create("api")
 val lib = sourceSets.create("lib")
@@ -49,9 +49,9 @@ transitiveSourceSets {
     sourceSet(main) {
         compileClasspath(api, lib, backend)
 
-        bundleFrom(commonProject)
+        //bundleFrom(commonProject)
 
-        bundleOutput(api, lib, backend)
+        //bundleOutput(api, lib, backend)
     }
     sourceSet(testMod) {
         rootCompile()
@@ -60,10 +60,10 @@ transitiveSourceSets {
     createCompileConfigurations()
 }
 
-platform {
-    setupLoomMod(api, lib, backend, main)
-    setupLoomRuns()
-    setupTestMod(testMod)
+platformMDG {
+    setupMDGMod(api, lib, backend, main)
+    setupMDGRuns()
+    //setupTestMod(testMod)
 }
 
 val replaceProperties = listOf(
@@ -87,41 +87,45 @@ tasks.withType<ProcessResources>().configureEach {
     }
 }
 
-jarSets {
-    mainSet.publishWithRawSources {
-        artifactId = "flywheel-neoforge-${property("artifact_minecraft_version")}"
-    }
-    mainSet.outgoing("flywheel")
-
-    create("api", api, lib).apply {
-        addToAssemble()
-        publishWithRawSources {
-            artifactId = "flywheel-neoforge-api-${property("artifact_minecraft_version")}"
-        }
-
-        configureJar {
-            manifest {
-                attributes("Fabric-Loom-Remap" to "true")
-            }
-        }
-    }
-}
+//jarSets {
+//    mainSet.publishWithRawSources {
+//        artifactId = "flywheel-neoforge-${property("artifact_minecraft_version")}"
+//    }
+//    mainSet.outgoing("flywheel")
+//
+//    create("api", api, lib).apply {
+//        addToAssemble()
+//        publishWithRawSources {
+//            artifactId = "flywheel-neoforge-api-${property("artifact_minecraft_version")}"
+//        }
+//
+//        configureJar {
+//            manifest {
+//                attributes("Fabric-Loom-Remap" to "true")
+//            }
+//        }
+//    }
+//}
 
 defaultPackageInfos {
     sources(api, lib, backend, main)
 }
 
-loom {
-    mixin {
-        useLegacyMixinAp = true
-        add(main, "flywheel.refmap.json")
-        add(backend, "backend-flywheel.refmap.json")
-    }
+//loom {
+//    mixin {
+//        useLegacyMixinAp = true
+//        add(main, "flywheel.refmap.json")
+//        add(backend, "backend-flywheel.refmap.json")
+//    }
+//}
+
+neoForge {
+    version = "21.11.0-beta"
 
     runs {
         configureEach {
-            property("forge.logging.markers", "")
-            property("forge.logging.console.level", "debug")
+            systemProperty("forge.logging.markers", "")
+            systemProperty("forge.logging.console.level", "debug")
         }
     }
 }
@@ -129,13 +133,19 @@ loom {
 repositories {
     maven("https://maven.neoforged.net/releases/")
     maven("https://maven.caffeinemc.net/releases/")
+
+    //TODO archless: add in subproject extension
+    maven("https://api.modrinth.com/maven") {
+        name = "Modrinth"
+        content {
+            includeGroup("maven.modrinth")
+        }
+    }
 }
 
 dependencies {
-    neoForge("net.neoforged:neoforge:${property("neoforge_version")}")
-
-    modCompileOnly("net.caffeinemc:sodium-neoforge-api:${property("sodium_version")}")
-    modCompileOnly("maven.modrinth:iris:${property("iris_version")}-neoforge")
+    compileOnly("net.caffeinemc:sodium-neoforge-api:${property("sodium_version")}")
+    compileOnly("maven.modrinth:iris:${property("iris_version")}-neoforge")
 
     "forApi"(project(path = common, configuration = "apiClasses"))
     "forLib"(project(path = common, configuration = "libClasses"))
