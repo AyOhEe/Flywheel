@@ -4,7 +4,6 @@ plugins {
     `maven-publish`
     id("net.neoforged.moddev")
     id("flywheel.subproject")
-    id("flywheel.platform")
 }
 
 val common = ":common"
@@ -13,11 +12,6 @@ val platform = ":neoforge"
 //subproject.init("vanillin-neoforge", "vanillin_group", "vanillin_version")
 
 val main = sourceSets.getByName("main")
-
-platformMDG {
-    setupMDGMod(main)
-    setupMDGRuns()
-}
 
 transitiveSourceSets {
     sourceSet(main) {
@@ -75,6 +69,29 @@ neoForge {
             systemProperty("forge.logging.markers", "")
             systemProperty("forge.logging.console.level", "debug")
         }
+
+        create("client") {
+            client()
+
+            // Turn on our own debug flags
+            systemProperty("flw.dumpShaderSource", "true")
+            systemProperty("flw.debugMemorySafety", "true")
+
+            // Turn on mixin debug flags
+            systemProperty("mixin.debug.export", "true")
+            systemProperty("mixin.debug.verbose", "true")
+
+            // 720p baby!
+            listOf("--width", "1280", "--height", "720").forEach(::programArgument)
+        }
+
+        create("server") {
+            server()
+        }
+    }
+
+    mods.register("vanillin") {
+        sourceSet(main)
     }
 }
 

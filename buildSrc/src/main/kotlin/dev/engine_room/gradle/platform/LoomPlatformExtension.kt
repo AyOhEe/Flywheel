@@ -13,36 +13,6 @@ import org.gradle.kotlin.dsl.the
 import java.io.File
 
 open class LoomPlatformExtension(val project: Project) {
-    fun setupLoomMod(vararg sourceSets: SourceSet) {
-        project.the<LoomGradleExtensionAPI>().mods.maybeCreate("main").apply {
-            sourceSets.forEach(::sourceSet)
-        }
-    }
-
-    fun setupLoomRuns() {
-        project.the<LoomGradleExtensionAPI>().runs.apply {
-            named("client") {
-                isIdeConfigGenerated = true
-
-                // Turn on our own debug flags
-                property("flw.dumpShaderSource", "true")
-                property("flw.debugMemorySafety", "true")
-
-                // Turn on mixin debug flags
-                property("mixin.debug.export", "true")
-                property("mixin.debug.verbose", "true")
-
-                // 720p baby!
-                programArgs("--width", "1280", "--height", "720")
-            }
-
-            // We're a client mod, but we need to make sure we correctly render when playing on a server.
-            named("server") {
-                isIdeConfigGenerated = true
-                programArgs("--nogui")
-            }
-        }
-    }
 
     fun setupTestMod(sourceSet: SourceSet) {
         project.tasks.apply {

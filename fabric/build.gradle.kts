@@ -63,8 +63,6 @@ transitiveSourceSets {
 }
 
 platformLoom {
-    setupLoomMod(api, lib, backend, main)
-    setupLoomRuns()
     setupTestMod(testMod)
 }
 
@@ -120,6 +118,33 @@ defaultPackageInfos {
 }
 
 loom {
+    mods.register("flywheel") {
+        listOf(api, lib, backend, main).forEach(::sourceSet)
+    }
+
+    runs {
+        named("client") {
+            isIdeConfigGenerated = true
+
+            // Turn on our own debug flags
+            property("flw.dumpShaderSource", "true")
+            property("flw.debugMemorySafety", "true")
+
+            // Turn on mixin debug flags
+            property("mixin.debug.export", "true")
+            property("mixin.debug.verbose", "true")
+
+            // 720p baby!
+            programArgs("--width", "1280", "--height", "720")
+        }
+
+        // We're a client mod, but we need to make sure we correctly render when playing on a server.
+        named("server") {
+            isIdeConfigGenerated = true
+            programArgs("--nogui")
+        }
+    }
+
     mixin {
         useLegacyMixinAp = true
         add(main, "flywheel.refmap.json")

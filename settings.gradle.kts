@@ -22,5 +22,5 @@ rootProject.name = "Flywheel"
 include("common")
 include("fabric")
 include("neoforge")
-//include("vanillinNeoForge")
 include("vanillinFabric")
+include("vanillinNeoForge")

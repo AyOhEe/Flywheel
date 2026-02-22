@@ -4,7 +4,6 @@ plugins {
     `maven-publish`
     id("net.neoforged.moddev")
     id("flywheel.subproject")
-    id("flywheel.platform")
 }
 
 val common = ":common"
@@ -60,11 +59,10 @@ transitiveSourceSets {
     createCompileConfigurations()
 }
 
-platformMDG {
-    setupMDGMod(api, lib, backend, main)
-    setupMDGRuns()
-    //setupTestMod(testMod)
-}
+
+//TODO archless: test mod
+//setupTestMod(testMod)
+
 
 val replaceProperties = listOf(
     "mod_license",
@@ -127,6 +125,29 @@ neoForge {
             systemProperty("forge.logging.markers", "")
             systemProperty("forge.logging.console.level", "debug")
         }
+
+        create("client") {
+            client()
+
+            // Turn on our own debug flags
+            systemProperty("flw.dumpShaderSource", "true")
+            systemProperty("flw.debugMemorySafety", "true")
+
+            // Turn on mixin debug flags
+            systemProperty("mixin.debug.export", "true")
+            systemProperty("mixin.debug.verbose", "true")
+
+            // 720p baby!
+            listOf("--width", "1280", "--height", "720").forEach(::programArgument)
+        }
+
+        create("server") {
+            server()
+        }
+    }
+
+    mods.register("flywheel") {
+        listOf(api, lib, backend, main).forEach(::sourceSet)
     }
 }
 
